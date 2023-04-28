@@ -58,15 +58,22 @@ LINGO download: https://lindo.com/
 
 **Report**
 (15%) Structure
+
 (10%) Creativity
+
 (30%) Methodology
+
 (20%) Coherent account in own words
+
 (15%) Ease of reading and grammar
+
 (10%) Word count
 
 **Poster presentation**
 (40%) Preparation of poster
+
 (20%) Clarity of voice and spoken language
+
 (40%) Logic and structure of the contents
 
 Lecturer’s marks will be given to the entire team (same for all the members) considering report and presentation, each with 50%

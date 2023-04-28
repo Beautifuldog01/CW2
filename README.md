@@ -71,6 +71,7 @@ LINGO download: https://lindo.com/
 (10%) Word count
 
 **Poster presentation**
+
 (40%) Preparation of poster
 
 (20%) Clarity of voice and spoken language

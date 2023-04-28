@@ -18,9 +18,7 @@ Tentative plan：
 
 - Printing options:
 
-  - We print it for you (send the file to our TA
-
-    XueqiYao20@ student.xitlu.edu.cn by May 14t)
+  - We print it for you (send the file to our TA XueqiYao20@student.xitlu.edu.cn by May 14th)
 
   - Print it out yourself and bring it to the poster presentation
 

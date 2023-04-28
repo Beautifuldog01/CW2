@@ -40,23 +40,15 @@ LINGO download: https://lindo.com/
 
 **Report outline sample for Topic 3:**
 
-- Introduction
+- Introduction(the background of your problem, the story)
 
-  (the background of your problem, the story)
-
-- Problem description
-
-  (what are the inputs, the assumptions, the objective, and the
+- Problem description(what are the inputs, the assumptions, the objective, and the
 
 - constraints; a toy example, figure illustrations if possible; etc.)
 
-- MIP Model
+- MIP Model(Notations for sets, parameters, variables; explain how to model each constraint, present the entire model)
 
-  (Notations for sets, parameters, variables; explain how to model each constraint, present the entire model)
-
-- Computational Results
-
-  (data, software/solver used to solve the MIP model, sensitivity analysis and other interesting results, etc)
+- Computational Results(data, software/solver used to solve the MIP model, sensitivity analysis and other interesting results, etc)
 
 - Conclusion
 

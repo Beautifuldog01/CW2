@@ -42,9 +42,7 @@ LINGO download: https://lindo.com/
 
 - Introduction(the background of your problem, the story)
 
-- Problem description(what are the inputs, the assumptions, the objective, and the
-
-- constraints; a toy example, figure illustrations if possible; etc.)
+- Problem description(what are the inputs, the assumptions, the objective, and the constraints; a toy example, figure illustrations if possible; etc.)
 
 - MIP Model(Notations for sets, parameters, variables; explain how to model each constraint, present the entire model)
 

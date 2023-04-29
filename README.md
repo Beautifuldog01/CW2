@@ -36,9 +36,9 @@ Each group (not each person) should submit a report:
 
 Search or designed by yourself to investigate a real-life MIP problem. Formulate the general model for the problem and solve it using existing solvers, such as Excel, LINGO, CPLEX, etc.
 
-CPLEX download: <https://www.ibm.com/products/ilog-cplex-optimization-studio>
+CPLEX download: https://www.ibm.com/products/ilog-cplex-optimization-studio 
 
-LINGO download: <https://lindo.com/>
+LINGO download: https://lindo.com/
 
 **Report outline sample for Topic 3:**
 
@@ -112,4 +112,3 @@ In this formulation:
 ### 假设
 
 1. 来回cost和time都一样
-asdfasdfasdf

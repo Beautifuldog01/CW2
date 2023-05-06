@@ -1,7 +1,8 @@
 import itertools
 import pandas as pd
 import numpy as np
-
+from data_process import read_and_process_csv
+import os
 
 def combined_cost_and_transport(path, flight_df, train_df, max_flights, max_trains):
     total_cost = 0
@@ -41,26 +42,42 @@ def tsp_bruteforce_combined(flight_data, train_data, start, max_flights, max_tra
 
     return min_path, min_cost, min_transport
 
+# London	Vienna	Paris	Rome	Barcelona	Berline	Amsterdam	København	Zurich	Budapest
+cities = ['London', 'Vienna', 'Paris', 'Rome', 'Barcelona', 'Berlin', 'Amsterdam', 'Copenhagen', 'Zurich', 'Budapest']
 
-num = 10
-all_cities = ['London', 'Paris', 'Berlin', 'Madrid', 'Rome', 'Vienna', 'Bucharest', 'Warsaw', 'Budapest', 'Hamburg']
-cities = np.random.choice(all_cities, num, replace=False)
+def read_month_data(directory):
+    data = {}
+    for file_name in os.listdir(directory):
+        # 仅处理 CSV 文件
+        if file_name.endswith(".csv"):
+            # 从文件名中提取数据类型
+            data_type = file_name[:-4]
+            file_path = os.path.join(directory, file_name)
+            data[data_type] = read_and_process_csv(file_path)
+    return data
 
-np.random.seed(42)
-flight_costs = np.random.randint(500, 600, size=(num, num))
-np.fill_diagonal(flight_costs, 0)
-train_costs = np.random.randint(500, 700, size=(num, num))
-np.fill_diagonal(train_costs, 0)
+july_data_path = "/Users/badudu/Documents/MTH203/CW2/code/data/July"
+august_data_path = "/Users/badudu/Documents/MTH203/CW2/code/data/August"
 
-flight_df = pd.DataFrame(flight_costs, columns=cities, index=cities)
-train_df = pd.DataFrame(train_costs, columns=cities, index=cities)
+july_data = read_month_data(july_data_path)
+august_data = read_month_data(august_data_path)
+
+flight_cost_df = pd.DataFrame(july_data['flight_costs'], columns=cities, index=cities)
+train_cost_df = pd.DataFrame(july_data['train_costs'], columns=cities, index=cities)
+flight_time_df = pd.DataFrame(july_data['flight_time'], columns=cities, index=cities)
+train_time_df = pd.DataFrame(july_data['train_time'], columns=cities, index=cities)
+
+alpaha = 0.3
+beta = 0.7
+
+flight_df = flight_cost_df * alpaha + flight_time_df * beta
+train_df = train_cost_df * alpaha + train_time_df * beta
 
 start_city = cities[0]
 max_flights = 10
 max_trains = 10
-optimal_path, min_cost, optimal_transport = tsp_bruteforce_combined(flight_df, train_df, start_city, max_flights,
-                                                                    max_trains)
+optimal_path, min_cost, optimal_transport = tsp_bruteforce_combined(flight_df, train_df, start_city, max_flights, max_trains)
 
 print(f"shortest path: {optimal_path}")
 print(f"way or transport: {optimal_transport}")
-print(f"lowest fee: {min_cost}")
+print(f"lowest fee: {np.around(min_cost*1000)}")

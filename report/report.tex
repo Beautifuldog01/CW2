@@ -48,40 +48,46 @@ consisting of an ODE and a pair of boundary conditions, where $L > 0$.
 \section{Problem description}
 
 \section{MIP Model}
-Given two graphs $G_1(V_1, E_1)$ and $G_2(V_2, E_2)$, with edge weight function
-$w : E_1 \cup E_2 \rightarrow \mathbb{R}^+$. We create a new graph $G(V, E)$,
-where $V = V_1 \cup V_2$ and $E = E_1 \cup E_2$. Our goal is to find a
-Hamiltonian cycle with minimum the objective function in the new graph, using binary
-variables $x_{ij}^k$ to control the selection of edges from either $G_1$ or $G_2$.
-Let $x_{ij}^k \in \{0, 1\}$ be a binary variable, where $x_{ij}^k = 1$ if edge $(i, j)$ from graph $G_k$ is selected and $x_{ij}^k = 0$ otherwise.
-\\
-The objective function to minimize can be written as:
+Let $G_1(V_1, E_1)$ and $G_2(V_2, E_2)$ be two given graphs, each with their respective vertex and edge sets. Define a positive edge weight function $w : E_1 \cup E_2 \rightarrow \mathbb{R}^+$. We construct a new graph $G(V, E)$, where $V = V_1 \cup V_2$ and $E = E_1 \cup E_2$. The objective is to find a Hamiltonian cycle in $G$ that minimizes the objective function. In order to achieve this, we introduce binary variables $x_{ij}^k$ for edge selection from either $G_1$ or $G_2$.
+
+Formally, let $x_{ij}^k \in \{0, 1\}$ be a binary variable such that:
+
+\begin{equation*}
+x_{ij}^k =
+\begin{cases}
+1, & \text{if edge } (i, j) \text{ from graph } G_k \text{ is selected,} \\
+0, & \text{otherwise.}
+\end{cases}
+\end{equation*}
+
+The goal is to determine the values of $x_{ij}^k$ that lead to a Hamiltonian cycle with the minimum objective function value in the graph $G$.
+ The objective function to minimize can be written as:
 \begin{equation*}
   \text{minimize} \, f = \sum_{k=1}^{2} \sum_{(i,j) \in E_k} w_{ij}^k x_{ij}^k
 \end{equation*}
 
 Subject to the following \textbf{constraints}:
 
-1. Each vertex has a total degree of 2, with one incoming edge (in-degree) and one outgoing edge (out-degree) from either graph $G_1$ or $G_2$.
+\begin{enumerate}
+  \item Each vertex has a total degree of 2, with one incoming edge (in-degree) and one outgoing edge (out-degree) from either graph $G_1$ or $G_2$.
 
-\begin{equation*}
-  \sum_{k=1}^{2} \sum_{j \in V} x_{ij}^k = 2, \quad \forall i \in V
-\end{equation*}
+  \begin{equation*}
+    \sum_{k=1}^{2} \sum_{j \in V} x_{ij}^k = 2, \quad \forall i \in V
+  \end{equation*}
+  \item No subtours are allowed (subtour elimination constraint):
 
-2. No subtours are allowed (subtour elimination constraint):
+  \begin{equation}
+    \sum_{(i,j) \in S \times (V \setminus S)} x_{ij}^k \geq 2, \quad \forall S \subset V, S \neq \emptyset, S \neq V, k \in \{1, 2\}
+  \end{equation}
+  
+  Here, $S$ is a subset of $V$, and $(V \setminus S)$ is the complement of $S$ in $V$. (1) ensures that there are no smaller cycles within the Hamiltonian cycle.
+  \item The number of edges selected from $G_1$ and $G_2$ are no more than $N_1$ and $N_2$ respectively.
 
-\begin{equation*}
-  \sum_{(i,j) \in S \times (V \setminus S)} x_{ij}^k \geq 2, \quad \forall S \subset V, S \neq \emptyset, S \neq V, k \in \{1, 2\}
-\end{equation*}
+  \begin{equation*}
+    \sum_{(i,j) \in E_1} x_{ij}^1 \leq N_1 \quad \text{and} \quad \sum_{(i,j) \in E_2} x_{ij}^2 \leq N_2,  \quad \forall i,j \in V
+  \end{equation*}
+\end{enumerate}
 
-Here, $S$ is a subset of $V$, and $(V \setminus S)$ is the complement of $S$ in $V$. The second constraint ensures that there are no smaller cycles within the Hamiltonian cycle.
-
-3. The number of edges selected from $G_1$ and $G_2$ are no more than $N_1$ and $N_2$ respectively.
-
-\begin{equation*}
-  \sum_{(i,j) \in E_1} x_{ij}^1 \leq N_1 \quad \text{and} \quad \sum_{(i,j) \in E_2} x_{ij}^2 \leq N_2,  \quad \forall i,j \in V
-\end{equation*}
-\\
 \subsection*{Variables and Parameters}
 In our case, the variables and parameters are defined as follows:
 \begin{itemize}

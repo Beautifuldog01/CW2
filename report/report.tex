@@ -1,4 +1,4 @@
-\documentclass[11pt]{extarticle}
+\documentclass{extarticle}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
@@ -9,6 +9,8 @@
 \usepackage[margin=1.1in]{geometry}
 \usepackage{setspace}
 \usepackage{parskip}
+\usepackage{multirow}
+\usepackage{array}
 \usepackage{indentfirst}
 \usepackage{booktabs}
 \usepackage[bottom]{footmisc}
@@ -55,10 +57,7 @@ Berlin, Amsterdam, Copenhagen, Zurich, and Budapest. They prefer traveling by
 train and plane, but due to Lily's past witness of a traumatic plane crash,
 they will limit the number of times that they take a plane.
 
-They have time to travel in July and August but need to plan their journey
-while considering varying train and plane ticket prices. The challenge lies in
-organizing their routes under the constraints of time and cost, while also
-ensuring that they visit all of their desired destinations. However, they have
+In order to plan their sightseeing itinerary, the challenge lies in organizing their routes under the constraints of time and cost, while also ensuring that they visit all of their desired destinations, taking into account the varying train and plane ticket prices. However, they have
 no idea to start with, so they turn to the Ikunbelievable Group for help.
 
 \section{Problem description}
@@ -89,17 +88,16 @@ the constraints described below.
 We make the following assumptions in our analysis:
 
 \begin{enumerate}
-  \item It takes the same time and cost to travel from city A to city B and from B to
-        A.
+  \item The travel time and cost between city A and city B are identical in both directions.
   \item Two modes of transportation, train and plane, are considered, despite the
         existence of alternative choices.
-  \item The trip must start and end in specific city and in our case, we choose London
+  \item The trip must start and end in specific city and in their case, they have chosen London
         as the starting and ending point because we need to put our luggage in the
         school in London then only take some necessary things for the trip.
-  \item The effect of flight price fluctuations is ignored. The average ticket price
-        between 8 AM and 8 PM from July 1 to July 7 and from August 1 to August 7 is
-        considered as the fare for the whole of July and August, without accounting for
-        additional baggage charges.
+  \item Taking into account that ticket prices may be affected by various factors, such as public health events, peak travel seasons, etc, we selected and averaged
+        all ticket prices between July 1st and July 14th, from 8 AM to 8 PM, to
+        determine the ticket price. Similarly, we applied the same process for the
+        period between August 1st and August 14th to reduce the impact of outliers, making the results more stable and reliable.\
 \end{enumerate}
 
 \subsection{Constraints}
@@ -241,4 +239,5 @@ consequences\cite{lamport1994latex}.
 \section{Appendix}
 \section{References}
 \printbibliography[heading=none]
+
 \end{document}

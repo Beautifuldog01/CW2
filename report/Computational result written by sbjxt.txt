@@ -1,0 +1,16 @@
+Since Lily has witnessed a plane crash, she hopes to limit the air travels within N times.
+
+Different weight functions result in different consequences.
+
+We give three following recommendations which distinguish the desired routes by different weight between cost and time with Python. Consider alpha and beta in our objective function f. In figure 1, alpha = 1, beta = 0, which means that They consider the route that takes the lowest price. In figure 2, alpha = 0, beta = 1, which indicates the choice that takes the shortest time. In figure 3, alpha = , beta = , which shows our recommendation that better balances the relationship between cost and time after computing thousands of results according to different values of alpha. 
+
+The code and collected data are attached in appendix section.
+
+Figure 1: Lowest Price (alpha = 1, beta = 0)
+
+Figure 2: Shortest time (alpha = 0, beta = 1)
+
+Figure 3: Most Cost-effective (alpha = 0.1, beta = 0.9)
+
+
+However, the enumeration method we used above takes a long time to find the answer

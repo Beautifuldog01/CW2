@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{graphicx}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage[backend=biber,style=numeric,natbib=true]{biblatex}
 \usepackage[margin=1.1in]{geometry}
@@ -57,8 +58,11 @@ Berlin, Amsterdam, Copenhagen, Zurich, and Budapest. They prefer traveling by
 train and plane, but due to Lily's past witness of a traumatic plane crash,
 they will limit the number of times that they take a plane.
 
-In order to plan their sightseeing itinerary, the challenge lies in organizing their routes under the constraints of time and cost, while also ensuring that they visit all of their desired destinations, taking into account the varying train and plane ticket prices. However, they have
-no idea to start with, so they turn to the Ikunbelievable Group for help.
+In order to plan their sightseeing itinerary, the challenge lies in organizing
+their routes under the constraints of time and cost, while also ensuring that
+they visit all of their desired destinations, taking into account the varying
+train and plane ticket prices. However, they have no idea to start with, so
+they turn to the Ikunbelievable Group for help.
 
 \section{Problem description}
 
@@ -88,16 +92,20 @@ the constraints described below.
 We make the following assumptions in our analysis:
 
 \begin{enumerate}
-  \item The travel time and cost between city A and city B are identical in both directions.
+  \item The travel time and cost between city A and city B are identical in both
+        directions.
   \item Two modes of transportation, train and plane, are considered, despite the
         existence of alternative choices.
-  \item The trip must start and end in specific city and in their case, they have chosen London
-        as the starting and ending point because we need to put our luggage in the
-        school in London then only take some necessary things for the trip.
-  \item Taking into account that ticket prices may be affected by various factors, such as public health events, peak travel seasons, etc, we selected and averaged
-        all ticket prices between July 1st and July 14th, from 8 AM to 8 PM, to
-        determine the ticket price. Similarly, we applied the same process for the
-        period between August 1st and August 14th to reduce the impact of outliers, making the results more stable and reliable.\
+  \item The trip must start and end in specific city and in their case, they have
+        chosen London as the starting and ending point because we need to put our
+        luggage in the school in London then only take some necessary things for the
+        trip.
+  \item Taking into account that ticket prices may be affected by various factors, such
+        as public health events, peak travel seasons, etc, we selected and averaged all
+        ticket prices between July 1st and July 14th, from 8 AM to 8 PM, to determine
+        the ticket price. Similarly, we applied the same process for the period between
+        August 1st and August 14th to reduce the impact of outliers, making the results
+        more stable and reliable.\
 \end{enumerate}
 
 \subsection{Constraints}
@@ -118,19 +126,53 @@ all cities. In order to achieve this goal, some constraints are as followed:
 
 \subsection{Toy Example}
 
-\subsubsection{title}
-When planning a trip, different orders of visiting destinations result in
-similar travel times but different costs.
+Now we demonstrate a simple example to show the consequence of implementing different traveling routes.
 
-To illustrate this, we construct a traveling route starting from Hefei to three
-different destinations: Guangzhou, Shenzhen, and Foshan. Surprisingly, the
-airfare from Hefei to Shenzhen is twice the price of flying to Guangzhou.
+\subsubsection{Input and Objective}
+\begin{itemize}
+  \item Cities: For the trip in the summer vocation, traveling from Anhui province to
+        Guangdong Province, choose 3 representative cities, including Guangzhou,
+        Shenzhen, and Foshan.
+  \item Transportation Options: Only consider to take plane or train to travel between
+        these cities.
+  \item Time: Only consider the time required to travel between cities by plane and
+        train.
+  \item Price: The fares we use was the real price booking in June 2022.
+  \item Customization: Only consider the total cost, and don't care about the time.
+\end{itemize}
 
-Therefore, the optimal plan is to fly from Hefei to Guangzhou, then take a
-high-speed train to Shenzhen, and Foshan, and finally fly back to Hefei from
-Foshan. If we instead fly through Shenzhen airport, it would cost nearly a
-thousand yuan more, even though the time consumed would be almost the same.
+\subsubsection{Assumptions}
+\begin{itemize}
+  \item The travel time and cost between city A and city B are identical in both directions.
+  \item Because of the distance, take plane from Anhui Province to Guangdong Province, and travel around the three cities in Guangdong Province by high-speed train.
+  \item The trip starts and ends in Hefei.
+  \item Each city can only be visited once.
+\end{itemize}
 
+The ticket prices as well as the possible traveling routes are as follows. Green lines mean the airplane routes, while the blue lines are represented the train routes.
+Following the pink one, the total cost we spend is ¥1200, which is the optimal plan. Compared with the best choice, if we carry out the orange route, the sum of all ticket prices is ¥1645, which will increase the expense for nearly ¥450.
+
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{pic/1.png}
+      \caption{Caption for your second image}%
+\label{fig:your_image1}
+  \end{subfigure}
+  \hfill % Add space between images
+  \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{pic/2.png}
+      \caption{Caption for your third image}%
+\label{fig:your_image2}
+  \end{subfigure}%
+  \hfill % Add space between images
+  \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{pic/3.png}
+      \caption{Caption for your third image}%
+\label{fig:your_image3}
+  \end{subfigure}%
+\end{figure}
 \section{MIP Model}
 Let $G_1(V_1, E_1)$ and $G_2(V_2, E_2)$ be two given graphs, each with their
 respective vertex and edge sets. Define a positive edge weight function $w :
@@ -173,7 +215,7 @@ Subject to the following \textbf{constraints}:
         \end{equation}
 
         Here, $S$ is a subset of $V$, and $(V \setminus S)$ is the complement of $S$ in
-        $V$. (1) ensures that there are no smaller cycles within the Hamiltonian cycle.
+        $V$. $(1)$ ensures that there are no smaller cycles within the Hamiltonian cycle.
   \item The number of edges selected from $G_1$ and $G_2$ are no more than $N_1$ and
         $N_2$ respectively.
 

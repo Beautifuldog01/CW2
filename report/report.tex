@@ -11,6 +11,7 @@
 \usepackage{setspace}
 \usepackage{parskip}
 \usepackage{multirow}
+\usepackage{enumitem}
 \usepackage{array}
 \usepackage{indentfirst}
 \usepackage{booktabs}
@@ -61,15 +62,14 @@ David, a music enthusiast, wants to visit Vienna, and Lily is keen on the Van
 Gogh Museum in Amsterdam. Considering their interests, they choose nine
 destinations: Vienna, Paris, Rome, Barcelona, Berlin, Amsterdam, Copenhagen,
 Zurich, and Budapest. They prefer traveling by train and plane, but due to
-Lily's past traumatic experience with a plane crash, they will limit their
-plane trips
+Lily's past witness of a tragic plane crash, they will limit their plane trips.
 
 To plan their itinerary, they must organize their routes considering time,
 cost, and visiting all desired destinations while accounting for varying train
 and plane ticket prices. Unsure of where to start, they seek assistance from
 the Ikunbelievable Group.
 
-\section{Problem description}
+\section{Problem Description}
 
 \subsection{Input and Objective}
 
@@ -94,7 +94,8 @@ the constraints described below.
 
 \subsection{Assumptions}
 
-We make the following assumptions to develop a comprehensive travel plan that caters to different individual preferences.
+We make the following assumptions to develop a comprehensive travel plan that
+caters to different individual preferences.
 
 \begin{enumerate}
   \item The travel time and cost between city A and city B are identical in both
@@ -115,7 +116,7 @@ Our goal is to identify the best transportation options for various groups with
 diverse needs, enabling efficient travel across all cities. Therefore, some
 constraints are as followed:
 
-\begin{enumerate}
+\begin{enumerate}[leftmargin=2cm]
   \item Each city can only be visited once.
   \item We set maximum limits for plane and train usage because some individuals may
         have constraints on taking planes or trains due to personal preferences,
@@ -130,7 +131,7 @@ different traveling routes.
 
 \subsubsection{Toy Example's Input}
 \begin{itemize}
-  \item Cities: For the trip in the summer vocation, traveling from Anhui province to
+  \item Cities: For the trip in the summer vocation, traveling from Anhui Province to
         Guangdong Province, choose 3 representative cities, including Guangzhou,
         Shenzhen, and Foshan.
   \item Transportation Options: Only consider to take plane or train to travel between
@@ -155,29 +156,27 @@ different traveling routes.
   \item No limit to the number of times for taking trains and planes.
 \end{itemize}
 
-The ticket prices and travel routes are shown with green lines for airplane
-routes and blue lines for train routes. The optimal plan is the pink route,
-costing ¥1200. The orange route costs ¥1645, increasing expenses by nearly ¥450
-compared to the best choice.
+The ticket prices and travel routes are displayed with black lines representing airplane routes and blue lines indicating train routes. In Figure~\ref{fig:Optimalchoice}, the optimal choice is priced at ¥1200. Figure~\ref{fig:Higherprice} presents an alternative option that costs ¥1645, resulting in an increased expenditure of approximately ¥450.
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=0.85\textwidth]{pic/1.png}
+    \includegraphics[width=0.85\textwidth]{pic/toy_all.jpg}
     \caption{Ticket Prices}%
-    \label{fig:your_image1}
+    \label{fig:Ticketprice}
   \end{subfigure}
   \hfill % Add space between images
   \begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=0.85\textwidth]{pic/2.png}
+    \includegraphics[width=0.85\textwidth]{pic/optimal.jpg}
     \caption{Optimal Choice}%
-    \label{fig:your_image2}
+    \label{fig:Optimalchoice}
   \end{subfigure}%
   \hfill % Add space between images
   \begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=0.85\textwidth]{pic/3.png}
+    \includegraphics[width=0.85\textwidth]{pic/higher_price.jpg}
     \caption{Choice With Higher Price}%
-    \label{fig:your_image3}
+    \label{fig:Higherprice}
   \end{subfigure}%
+  \caption{Toy Example}
 \end{figure}
 \section{MIP Model}
 Let $G_1(V_1, E_1)$ and $G_2(V_2, E_2)$ be two given graphs, each with their
@@ -217,12 +216,12 @@ Subject to the following \textbf{constraints}:
   \item No subtours are allowed (subtour elimination constraint):
 
         \begin{equation}
-          \sum_{(i,j) \in S \times (V \setminus S)} x_{ij}^k \geq 2, \quad \forall S \subset V, S \neq \emptyset, S \neq V, k \in \{1, 2\}
+          \sum_{(i,j) \in S \times (V \setminus S)} x_{ij}^k \geq 2, \quad \forall S \subset V, S \neq \emptyset, S \neq V, k \in \{1, 2\}\label{eq:Nosubtour}
         \end{equation}
 
         Here, $S$ is a subset of $V$, and $(V \setminus S)$ is the complement of $S$ in
-        $V$. $(1)$ ensures that there are no smaller cycles within the Hamiltonian
-        cycle.
+        $V$.\eqref{eq:Nosubtour} ensures that there are no smaller cycles within the
+        Hamiltonian cycle.
   \item The number of edges selected from $G_1$ and $G_2$ are no more than $N_1$ and
         $N_2$ respectively.
 
@@ -232,7 +231,6 @@ Subject to the following \textbf{constraints}:
 \end{enumerate}
 
 \subsection*{Variables and Parameters}
-In our case, the variables and parameters are defined as follows:
 \begin{itemize}
   \item $G_1(V_1, E_1)$ and $G_2(V_2, E_2)$ store the information of airplane's and train's transportation modes.
   \item The vertices $V_1$ and $V_2$ in each graph represent cities in different
@@ -246,7 +244,6 @@ In our case, the variables and parameters are defined as follows:
         \begin{equation*}
           w_{ij}^k = \alpha \cdot \text{cost}_{ij}^k + \beta \cdot \text{time}_{ij}^k, \quad where \quad \alpha + \beta = 1
         \end{equation*}
-
         where $\alpha$ and $\beta$ are the weights of the cost and time attributes
         respectively.
 
@@ -285,8 +282,9 @@ Different weight functions result in different
 consequences\cite{lamport1994latex}.
 \subsection*{Sensitive Analysis}
 \section{Conclusion}
-\section{Appendix}
 \section{References}
 \printbibliography[heading=none]
+\appendix
+\section{Appendix}
 
 \end{document}

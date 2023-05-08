@@ -1,4 +1,4 @@
-\documentclass{extarticle}
+\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
@@ -7,7 +7,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage[backend=biber,style=numeric,natbib=true]{biblatex}
-\usepackage[margin=1.1in]{geometry}
+\usepackage[margin=2.8cm]{geometry} % set page margins
 \usepackage{setspace}
 \usepackage{parskip}
 \usepackage{multirow}
@@ -15,20 +15,26 @@
 \usepackage{indentfirst}
 \usepackage{booktabs}
 \usepackage[bottom]{footmisc}
-\setlength{\footnotesep}{0.7cm}
-\setlength{\parindent}{1cm}
+\usepackage{xcolor}
+\usepackage[colorlinks=true, linkcolor=black]{hyperref}
+\setlength{\footnotesep}{0.5cm} % set footnote seperation to 0.5cm
+\setlength{\parindent}{1cm} \setstretch{1.15} \addbibresource{references.bib}% set paragraph indentation to 1cm
 
-\setstretch{1.15}
-
-\addbibresource{references.bib}
-
-\title{Modelling of real-life MIP Problems}
-\author{The Ikunbelievable Group\footnotemark[1]}
-\date{}
-
+\newcommand{\titlefont}{\fontsize{21}{32}\selectfont}
+\newcommand{\authorfont}{\fontsize{20.74}{24}\selectfont}
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+  \centering
+  \vspace*{5cm}
+  {\titlefont\textbf{\color{black}Topic 3: Modelling of Real-life MIP Problems}\par}
+  \vspace{1.5cm}
+  {\authorfont\color{black} The Ikunbelievable Group\par}
+  \vfill
+\end{titlepage}
+
+\tableofcontents
+\clearpage
 
 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
 \footnotetext[1]{%
@@ -51,18 +57,17 @@ the most of their summer vacation in Europe before the start of the school
 term, they decide to embark on a memorable 2-week trip, exploring famous
 European cities.
 
-David, a music fan, has a strong desire to visit Vienna, while Lily wishes to
-visit the Van Gogh Museum in Amsterdam. With their interests in mind, they
-eventually select nine different destinations: Vienna, Paris, Rome, Barcelona,
-Berlin, Amsterdam, Copenhagen, Zurich, and Budapest. They prefer traveling by
-train and plane, but due to Lily's past witness of a traumatic plane crash,
-they will limit the number of times that they take a plane.
+David, a music enthusiast, wants to visit Vienna, and Lily is keen on the Van
+Gogh Museum in Amsterdam. Considering their interests, they choose nine
+destinations: Vienna, Paris, Rome, Barcelona, Berlin, Amsterdam, Copenhagen,
+Zurich, and Budapest. They prefer traveling by train and plane, but due to
+Lily's past traumatic experience with a plane crash, they will limit their
+plane trips
 
-In order to plan their sightseeing itinerary, the challenge lies in organizing
-their routes under the constraints of time and cost, while also ensuring that
-they visit all of their desired destinations, taking into account the varying
-train and plane ticket prices. However, they have no idea to start with, so
-they turn to the Ikunbelievable Group for help.
+To plan their itinerary, they must organize their routes considering time,
+cost, and visiting all desired destinations while accounting for varying train
+and plane ticket prices. Unsure of where to start, they seek assistance from
+the Ikunbelievable Group.
 
 \section{Problem description}
 
@@ -89,46 +94,41 @@ the constraints described below.
 
 \subsection{Assumptions}
 
-We make the following assumptions in our analysis:
+We make the following assumptions to develop a comprehensive travel plan that caters to different individual preferences.
 
 \begin{enumerate}
   \item The travel time and cost between city A and city B are identical in both
         directions.
   \item Two modes of transportation, train and plane, are considered, despite the
         existence of alternative choices.
-  \item The trip must start and end in specific city and in their case, they have
-        chosen London as the starting and ending point because we need to put our
-        luggage in the school in London then only take some necessary things for the
-        trip.
-  \item Taking into account that ticket prices may be affected by various factors, such
-        as public health events, peak travel seasons, etc, we selected and averaged all
-        ticket prices between July 1st and July 14th, from 8 AM to 8 PM, to determine
-        the ticket price. Similarly, we applied the same process for the period between
-        August 1st and August 14th to reduce the impact of outliers, making the results
-        more stable and reliable.\
+  \item The trip must begin and end in a specific city, in Lily and David's case,
+        London, as they need to store their luggage at the school in London and take
+        only essential items for the journey.
+  \item Considering factors like public health events and peak travel seasons, we
+        averaged ticket prices between July 1st and 14th, and August 1st and 14th, from
+        8 AM to 8 PM, to determine ticket prices and minimize the impact of outliers.
 \end{enumerate}
 
 \subsection{Constraints}
 
-Our objective is to find the optimal transportation options for different
-groups of people with different demands, allowing for efficient travel across
-all cities. In order to achieve this goal, some constraints are as followed:
+Our goal is to identify the best transportation options for various groups with
+diverse needs, enabling efficient travel across all cities. Therefore, some
+constraints are as followed:
 
 \begin{enumerate}
   \item Each city can only be visited once.
-  \item Due to some special reasons, the times for taking plane or train will be
-        limited. For example, some people wouldn't like to take plane or train, some
-        people have some coupons that allow them to eat food for free on airplanes or
-        trains or they are the members of some airlines or train companies, so they can
-        get some extra luxury services. Therefore, we set the maximum times for taking
-        plane and train.
+  \item We set maximum limits for plane and train usage because some individuals may
+        have constraints on taking planes or trains due to personal preferences,
+        coupons for free food, or memberships with airlines or train companies
+        providing extra luxury services.
 \end{enumerate}
 
 \subsection{Toy Example}
 
-Now we demonstrate a simple example to show the consequence of implementing different traveling routes.
+Now we demonstrate a simple example to show the consequence of implementing
+different traveling routes.
 
-\subsubsection{Input and Objective}
+\subsubsection{Toy Example's Input}
 \begin{itemize}
   \item Cities: For the trip in the summer vocation, traveling from Anhui province to
         Guangdong Province, choose 3 representative cities, including Guangzhou,
@@ -137,40 +137,46 @@ Now we demonstrate a simple example to show the consequence of implementing diff
         these cities.
   \item Time: Only consider the time required to travel between cities by plane and
         train.
-  \item Price: The fares we use was the real price booking in June 2022.
+  \item Price: The fares used were based on real prices observed around one month in
+        advance, in June 2022.
   \item Customization: Only consider the total cost, and don't care about the time.
 \end{itemize}
 
-\subsubsection{Assumptions}
+\subsubsection{Toy Example's Assumptions}
 \begin{itemize}
-  \item The travel time and cost between city A and city B are identical in both directions.
-  \item Because of the distance, take plane from Anhui Province to Guangdong Province, and travel around the three cities in Guangdong Province by high-speed train.
+  \item The travel time and cost between city A and city B are identical in both
+        directions.
   \item The trip starts and ends in Hefei.
-  \item Each city can only be visited once.
 \end{itemize}
 
-The ticket prices as well as the possible traveling routes are as follows. Green lines mean the airplane routes, while the blue lines are represented the train routes.
-Following the pink one, the total cost we spend is ¥1200, which is the optimal plan. Compared with the best choice, if we carry out the orange route, the sum of all ticket prices is ¥1645, which will increase the expense for nearly ¥450.
+\subsubsection{Toy Example's Constraints}
+\begin{itemize}
+  \item Each city can only be visited once.
+  \item No limit to the number of times for taking trains and planes.
+\end{itemize}
 
-
+The ticket prices and travel routes are shown with green lines for airplane
+routes and blue lines for train routes. The optimal plan is the pink route,
+costing ¥1200. The orange route costs ¥1645, increasing expenses by nearly ¥450
+compared to the best choice.
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}{0.3\textwidth}
-      \includegraphics[width=\textwidth]{pic/1.png}
-      \caption{Ticket Prices}%
-\label{fig:your_image1}
+    \includegraphics[width=0.85\textwidth]{pic/1.png}
+    \caption{Ticket Prices}%
+    \label{fig:your_image1}
   \end{subfigure}
   \hfill % Add space between images
   \begin{subfigure}{0.3\textwidth}
-      \includegraphics[width=\textwidth]{pic/2.png}
-      \caption{Optimal Choice}%
-\label{fig:your_image2}
+    \includegraphics[width=0.85\textwidth]{pic/2.png}
+    \caption{Optimal Choice}%
+    \label{fig:your_image2}
   \end{subfigure}%
   \hfill % Add space between images
   \begin{subfigure}{0.3\textwidth}
-      \includegraphics[width=\textwidth]{pic/3.png}
-      \caption{Choice With Higher Price}%
-\label{fig:your_image3}
+    \includegraphics[width=0.85\textwidth]{pic/3.png}
+    \caption{Choice With Higher Price}%
+    \label{fig:your_image3}
   \end{subfigure}%
 \end{figure}
 \section{MIP Model}
@@ -193,8 +199,8 @@ Formally, let $x_{ij}^k \in \{0, 1\}$ be a binary variable such that:
 \end{equation*}
 
 The goal is to determine the values of $x_{ij}^k$ that lead to a Hamiltonian
-cycle with the minimum objective function value in the graph $G$. The objective
-function to minimize can be written as:
+cycle with the minimum objective function value in the graph $G$. It can be
+written as:
 \begin{equation*}
   \text{minimize} \, f = \sum_{k=1}^{2} \sum_{(i,j) \in E_k} w_{ij}^k x_{ij}^k
 \end{equation*}
@@ -215,7 +221,8 @@ Subject to the following \textbf{constraints}:
         \end{equation}
 
         Here, $S$ is a subset of $V$, and $(V \setminus S)$ is the complement of $S$ in
-        $V$. $(1)$ ensures that there are no smaller cycles within the Hamiltonian cycle.
+        $V$. $(1)$ ensures that there are no smaller cycles within the Hamiltonian
+        cycle.
   \item The number of edges selected from $G_1$ and $G_2$ are no more than $N_1$ and
         $N_2$ respectively.
 
@@ -233,7 +240,7 @@ In our case, the variables and parameters are defined as follows:
   \item $k$ is an index representing the transportation mode in the given graphs. Specifically, $k = 1$ corresponds to the airplane transportation mode in graph $G_1$, and $k = 2$ corresponds to the train transportation mode in graph $G_2$.
   \item If there is an edge between the vertices, it indicates that travel between the
         cities is accessible using either mode of transportation. We can represent an
-        edge $(i, j)$ as $(i, j) \in E_k$, where $k \in \{1, 2\}$.
+        edge between vertex $i$ and $j$ as $(i, j) \in E_k$, where $k \in \{1, 2\}$.
   \item The edges store $cost$ and $time$, which represent the one-way ticket price and
         travel time, respectively. So the weight function $w$ is defined as:
         \begin{equation*}

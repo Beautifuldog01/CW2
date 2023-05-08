@@ -1,16 +1,26 @@
-Since Lily has witnessed a plane crash, she hopes to limit the air travels within N times.
+To find how different constraints and weight functions influence the consequence, we use Python to process the data that we collected. 
 
-Different weight functions result in different consequences.
+After considering the condition which do not give any constraint on times of travel by air or train firstly, we give three following recommendations which distinguish the desired routes by different weight between cost and time. Consider alpha and beta in our objective function f. In Table 1, alpha = 1, beta = 0, which means that They consider the route that takes the lowest price. In Table 2, alpha = 0, beta = 1, which indicates the choice that takes the shortest time. In Table 3, alpha = 0.7, beta = 0.3, which shows our recommendation that better balances the relationship between cost and time after computing thousands of results according to different values of alpha. 
 
-We give three following recommendations which distinguish the desired routes by different weight between cost and time with Python. Consider alpha and beta in our objective function f. In figure 1, alpha = 1, beta = 0, which means that They consider the route that takes the lowest price. In figure 2, alpha = 0, beta = 1, which indicates the choice that takes the shortest time. In figure 3, alpha = , beta = , which shows our recommendation that better balances the relationship between cost and time after computing thousands of results according to different values of alpha. 
+Table 1: Lowest Price (alpha = 1, beta = 0)
+
+Table 2: Shortest time (alpha = 0, beta = 1)
+
+Table 3: Most Cost-effective (alpha = 0.7, beta = 0.3)
+
+Since Lily has witnessed a plane crash, she hopes to limit the air travels within N times. However, none of the former results fits Lily's constraint of flight number. If we limit the flights within 5 times, the calculation shows that no matter what alpha is, the optimal route remains the same, which is shown in Table 4 (N = 4). 
+
+Table 4: Limit flights within 4 times
 
 The code and collected data are attached in appendix section.
 
-Figure 1: Lowest Price (alpha = 1, beta = 0)
-
-Figure 2: Shortest time (alpha = 0, beta = 1)
-
-Figure 3: Most Cost-effective (alpha = 0.1, beta = 0.9)
+According to the calculation above, we recommend Lily to limit their times of flight into 6 times and consider alpha = 0.7, beta = 0.3 to meet the balance between cost and time, along with the fear for taking the plane.
 
 
-However, the enumeration method we used above takes a long time to find the answer
+
+
+
+
+
+
+According to the collected data, travelling by air takes less time than by train generally.

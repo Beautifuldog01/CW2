@@ -5,6 +5,7 @@ from tqdm import tqdm
 import os
 import csv
 
+
 def read_and_process_csv(file_name):
     matrix = []
 
@@ -19,7 +20,7 @@ def read_and_process_csv(file_name):
     matrix[np.isnan(matrix)] = 0
 
     for i in range(n):
-        for j in range(i+1, n):
+        for j in range(i + 1, n):
             matrix[i, j] = matrix[j, i]
 
     # matrix_nonzero = matrix[matrix > 0]
@@ -52,6 +53,7 @@ def combined_cost_and_transport(path, flight_df, train_df, max_flights, max_trai
             return float('inf'), transport
     return total_cost, transport
 
+
 def tsp_bruteforce_combined(flight_data, train_data, start, max_flights, max_trains):
     cities = flight_data.columns.tolist()
     cities.remove(start)
@@ -70,8 +72,10 @@ def tsp_bruteforce_combined(flight_data, train_data, start, max_flights, max_tra
 
     return min_path, min_cost, min_transport
 
+
 # London	Vienna	Paris	Rome	Barcelona	Berline	Amsterdam	København	Zurich	Budapest
 cities = ['London', 'Vienna', 'Paris', 'Rome', 'Barcelona', 'Berlin', 'Amsterdam', 'Copenhagen', 'Zurich', 'Budapest']
+
 
 def read_month_data(directory):
     data = {}
@@ -82,16 +86,18 @@ def read_month_data(directory):
             data[data_type] = read_and_process_csv(file_path)
     return data
 
+
 july_data_path = "/Users/badudu/Documents/MTH203/CW2/code/data/July"
 august_data_path = "/Users/badudu/Documents/MTH203/CW2/code/data/August"
 
 july_data = read_month_data(july_data_path)
-august_data = read_month_data(august_data_path)
+# august_data = read_month_data(august_data_path)
 
 flight_cost_df = pd.DataFrame(july_data['flight_costs'], columns=cities, index=cities)
 train_cost_df = pd.DataFrame(july_data['train_costs'], columns=cities, index=cities)
 flight_time_df = pd.DataFrame(july_data['flight_time'], columns=cities, index=cities)
 train_time_df = pd.DataFrame(july_data['train_time'], columns=cities, index=cities)
+
 
 def read_original_data(file_name):
     data = []
@@ -118,7 +124,9 @@ train_cost_original_df = read_original_data(os.path.join(july_data_path, 'train_
 flight_time_original_df = read_original_data(os.path.join(july_data_path, 'flight_time.csv'))
 train_time_original_df = read_original_data(os.path.join(july_data_path, 'train_time.csv'))
 
-def get_cost_and_time(optimal_path, optimal_transport, flight_cost_matrix, train_cost_matrix, flight_time_matrix, train_time_matrix):
+
+def get_cost_and_time(optimal_path, optimal_transport, flight_cost_matrix, train_cost_matrix, flight_time_matrix,
+                      train_time_matrix):
     cost_list = []
     time_list = []
 
@@ -139,7 +147,10 @@ def get_cost_and_time(optimal_path, optimal_transport, flight_cost_matrix, train
 
     return cost_list, time_list
 
+
 from functools import lru_cache
+
+
 def held_karp_modified(flight_df, train_df, start_city, max_flights, max_trains):
     cities = flight_df.columns.tolist()
     cities.remove(start_city)
@@ -163,7 +174,8 @@ def held_karp_modified(flight_df, train_df, start_city, max_flights, max_trains)
                 train_cost = train_df.loc[city, next_city]
 
                 if remaining_flights > 0:
-                    cost_flight, path_flight = dp(next_city, new_visited_cities, remaining_flights - 1, remaining_trains)
+                    cost_flight, path_flight = dp(next_city, new_visited_cities, remaining_flights - 1,
+                                                  remaining_trains)
                     cost_flight += flight_cost
 
                     if cost_flight < min_cost:
@@ -186,7 +198,8 @@ def held_karp_modified(flight_df, train_df, start_city, max_flights, max_trains)
     # Determine transport mode
     transport = []
     for i in range(len(optimal_path) - 1):
-        if max_flights > 0 and (flight_df.loc[optimal_path[i], optimal_path[i+1]] <= train_df.loc[optimal_path[i], optimal_path[i+1]] or max_trains == 0):
+        if max_flights > 0 and (flight_df.loc[optimal_path[i], optimal_path[i + 1]] <= train_df.loc[
+            optimal_path[i], optimal_path[i + 1]] or max_trains == 0):
             transport.append("Airplane")
             max_flights -= 1
         else:
@@ -195,21 +208,23 @@ def held_karp_modified(flight_df, train_df, start_city, max_flights, max_trains)
 
     return optimal_path, min_cost, transport
 
-alpaha = 0
-beta = 1 - alpaha
-flight_df = flight_cost_df * alpaha + flight_time_df * beta
-train_df = train_cost_df * alpaha + train_time_df * beta
+
+alpha = 0.35
+beta = 1 - alpha
+optimal_li = []
+flight_df = flight_cost_df * alpha + flight_time_df * beta * 500
+train_df = train_cost_df * alpha + train_time_df * beta * 500
 start_city = cities[0]
 max_flights = 10
 max_trains = 10
-
-optimal_path, min_cost, optimal_transport = tsp_bruteforce_combined(flight_df, train_df, start_city, max_flights, max_trains)
-
-cost_list, time_list = get_cost_and_time(optimal_path, optimal_transport, flight_cost_original_df, train_cost_original_df, flight_time_original_df, train_time_original_df)
-
+optimal_path, min_cost, optimal_transport = tsp_bruteforce_combined(flight_df, train_df, start_city, max_flights,
+                                                                    max_trains)
+cost_list, time_list = get_cost_and_time(optimal_path, optimal_transport, flight_cost_original_df,
+                                         train_cost_original_df, flight_time_original_df, train_time_original_df)
+optimal_li.append([optimal_path, optimal_transport, sum(cost_list), sum(time_list)])
 print("Optimal path:", optimal_path)
 print("Transportation mode:", optimal_transport)
 print("Costs for each segment:", cost_list)
 print("Times for each segment:", time_list)
 print("cost all", sum(cost_list))
-print("time all", np.round(sum(time_list)))
+print("time all", sum(time_list))

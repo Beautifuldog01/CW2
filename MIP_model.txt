@@ -1,0 +1,9 @@
+Our model involves two graphs, $G_1$ and $G_2$, each with their own sets of vertices and edges. We assign a positive weight to each edge and then combine these two graphs into a larger one, named $G$.
+
+Our goal is to find a Hamiltonian cycle within this larger graph that minimizes the sum of the weights in the cycle. To facilitate this, we introduce binary variables, $x_{ij}^k$, which indicate whether an edge from either $G_1$ or $G_2$ is selected for the cycle.
+
+The objective function to be minimized is the sum of the weights . The first con	straint ensures that each vertex in the graph is connected to exactly two other vertices, which is a requirement for a Hamiltonian cycle.
+
+The second constraint eliminates subtours, which are smaller cycles within the larger one. This ensures that our solution is a single, uninterrupted cycle that visits every vertex exactly once.
+
+The final constraint limits the number of edges that can be selected from each of the original graphs, $G_1$ and $G_2$. This could be useful in situations where we might want to limit the times of taking air or train.

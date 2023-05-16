@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs} % This package allows for larger font sizes.
+\usepackage{bm}       % This package allows for bold math symbols.
+
+
+\begin{document}
+ % This sets the main font size to 14pt and the line spacing to 17pt.
+\boldmath% % This command makes all math symbols bold.
+
+\begin{equation*}
+    x_{ij}^k =
+    \begin{cases}
+      1, & \textbf{if edge } (i, j) \textbf{ from graph } G_k \textbf{ is selected,} \\
+      0, & \textbf{otherwise.}
+    \end{cases}
+\end{equation*}
+
+
+\begin{equation*}
+    \textbf{minimize} \, f = \sum_{k=1}^{2} \sum_{(i,j) \in E_k} w_{ij}^k x_{ij}^k
+  \end{equation*}
+
+
+\begin{equation*}
+    \sum_{k=1}^{2} \sum_{j \in V} x_{ij}^k = 2, \quad \forall i \in V
+\end{equation*}
+
+\begin{equation}
+    \sum_{(i,j) \in S \times (V \setminus S)} x_{ij}^k \geq 2, \quad \forall S \subset V, S \neq \emptyset, S \neq V, k \in \{1, 2\}\label{eq:Nosubtour}
+\end{equation}
+
+\begin{equation*}
+    \sum_{(i,j) \in E_1} x_{ij}^1 \leq N_1 \quad \textbf{and} \quad \sum_{(i,j) \in E_2} x_{ij}^2 \leq N_2,  \quad \forall i,j \in V
+\end{equation*}
+
+\begin{equation*}
+    w_{ij}^k = \alpha \cdot \textbf{cost}_{ij}^k + \beta \cdot \textbf{time}_{ij}^k, \quad where \quad \alpha + \beta = 1
+\end{equation*}
+
+
+\begin{equation*}
+    \textbf{minimize}\, f = \sum_{k=1}^{2} \sum_{(i,j) \in E_k} (\alpha \cdot \textbf{cost}_{ij}^k + \beta \cdot \textbf{time}_{ij}^k) x_{ij}^k
+\end{equation*}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{>{\bfseries}l>{\bfseries}l>{\bfseries}r>{\bfseries}r>{\bfseries}r}
+      \toprule
+      Segment                          & Transportation Mode & Cost (¥) & Time (hours) \\
+      \midrule
+      London $\rightarrow$  Copenhagen & Airplane            & 669.0    & 2.0          \\
+      Copenhagen $\rightarrow$  Barcelona & Airplane          & 1214.0   & 3.0          \\
+      Barcelona $\rightarrow$  Rome     & Airplane            & 634.0    & 2.0          \\
+      Rome $\rightarrow$  Budapest     & Airplane            & 489.0    & 1.67         \\
+      Budapest $\rightarrow$  Vienna    & Train               & 175.0    & 2.63         \\
+      Vienna $\rightarrow$  Zurich      & Train               & 630.0    & 8.0          \\
+      Zurich $\rightarrow$  Berlin      & Train               & 455.0    & 9.0          \\
+      Berlin $\rightarrow$  Amsterdam   & Train               & 599.0    & 6.3          \\
+      Amsterdam $\rightarrow$  Paris    & Train               & 697.0    & 3.5          \\
+      Paris $\rightarrow$  London       & Train               & 1148.0   & 2.0          \\
+      \midrule
+      Total                            &                     & 6710.0   & 40.3         \\
+      \bottomrule
+    \end{tabular}
+    \caption{$\alpha=0.3, \beta=0.7, N_1=4, N_2=10$}%
+    \label{tab:alpha0.3beta0.7N14}
+  \end{table}
+
+  \begin{table}[!ht]
+    \centering
+    \begin{tabular}{>{\bfseries}l>{\bfseries}l>{\bfseries}r>{\bfseries}r>{\bfseries}r}
+      \toprule
+      Parameters    & Cost (¥) & Time (hours) \\
+      \midrule
+      $\alpha=0, \beta=1, N_1=N_2=10$               & 7241.0   & 13.33        \\
+      $\alpha=1, \beta=0, N_1=N_2=10$   & 4203.0   & 57.66        \\
+      $\alpha=0.3, \beta=0.7, N_1=N_2=10$             & 5952.0   & 13.65        \\
+      $\alpha=0.3, \beta=0.7, N_1=4, N_2=10$  & 6710.0   & 40.3         \\
+      \bottomrule
+    \end{tabular}
+    \caption{Summary of Total Costs and Time for Different Parameters}%
+    \label{tab:summary}
+  \end{table}
+
+\end{document}

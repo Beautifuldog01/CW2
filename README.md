@@ -1,6 +1,6 @@
 # CW2
 
-# 泰裤辣
+## 泰裤辣
 
 ## Deadline
 
@@ -36,9 +36,9 @@ Each group (not each person) should submit a report:
 
 Search or designed by yourself to investigate a real-life MIP problem. Formulate the general model for the problem and solve it using existing solvers, such as Excel, LINGO, CPLEX, etc.
 
-CPLEX download: <https://www.ibm.com/products/ilog-cplex-optimization-studio>
+CPLEX download: https://www.ibm.com/products/ilog-cplex-optimization-studio 
 
-LINGO download: <https://lindo.com/>
+LINGO download: https://lindo.com/
 
 **Report outline sample for Topic 3:**
 
@@ -86,9 +86,9 @@ Lecturer’s marks will be given to the entire team (same for all the members) c
 
 ### Objective function规范写法
 
-如果你想遍历两个图结构中的所有节点一次, 可以将这个问题建模为一个“广义旅行商问题” (Generalized Traveling Salesman Problem, GTSP)， 因为你需要找到一个能够遍历所有节点的最短路径, 同时考虑两个图中的连通性。
+如果你想遍历两个图结构中的所有节点一次, 可以将这个问题建模为一个"广义旅行商问题" (Generalized Traveling Salesman Problem, GTSP)， 因为你需要找到一个能够遍历所有节点的最短路径, 同时考虑两个图中的连通性。
 
-假设两个图分别是 $\mathrm{G} 1(\mathrm{~V} 1, \mathrm{E} 1)$ 和 G2(V2, E2)，其中 $V 1$ 和 $\mathrm{V} 2$ 是节点集合, E1 和 E2 是边集 合。我们需要找到一个路径 $P$, 使得 $P$ 能够遍历所有节点, 并尽可能地优化某个目标（例如 最短路径）。
+假设两个图分别是 G1(V1, E1) 和 G2(V2, E2)，其中 $V1$ 和 $V2$ 是节点集合, E1 和 E2 是边集 合。我们需要找到一个路径 $P$, 使得 $P$ 能够遍历所有节点, 并尽可能地优化某个目标（例如 最短路径）。
 
 首先, 我们需要将两个图进行合并。可以定义一个新的图 $G(V, E)$, 其中 $V=V 1 \cup V 2$, 然后 定义 $E$ 的集合，使得如果两个节点在 G1 或 G2 中是连通的，那么它们在 G 中也是连通的。
 具体来说, $E=\{(u, v) \mid(u, v) \in E 1$ 或 $(u, v) \in E 2\}$ 。
@@ -103,7 +103,7 @@ $$\sum_{u \in V} x(u, v) = 1 \quad \forall v \in V$$
 
 In this formulation:
 
-- 'c(u, v) ' is the cost (e.g., distance) between nodes 'u’ and 'v'.
+- 'c(u, v) ' is the cost (e.g., distance) between nodes 'u' and 'v'.
 - ' $x(u, v)$ ' is a binary variable, equal to 1 if the edge ' $(u, v)$ ' is included in the solution, and $O$ otherwise.
 - ' $\delta(\mathbf{S})$ ' is the set of edges with one endpoint in the subset ' $\mathbf{S}$ ' and the other endpoint outside of ' $\mathbf{S}$ '.
 - The first constraint ensures that at least one edge enters and leaves every subset ' $\mathbf{S}^{\text {' }}$ of nodes.
@@ -112,3 +112,12 @@ In this formulation:
 ### 假设
 
 1. 来回cost和time都一样
+2. 只考虑飞机和火车
+3. 不考虑航班价格波动的影响, 即航班价格不会随着时间变化而变化
+4. 价格的由来平均
+
+### 限制
+
+1. cost和time都有上限
+2. 所有的城市都遍历到且只遍历一次
+

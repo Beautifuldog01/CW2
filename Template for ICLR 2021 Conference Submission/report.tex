@@ -1,25 +1,11 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{graphicx}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage[backend=biber,style=numeric,natbib=true]{biblatex}
-\usepackage[margin=2.8cm]{geometry} % set page margins=-0987
-\usepackage{setspace}
-\usepackage{parskip}
-\usepackage{multirow}
-\usepackage{enumitem}
-\usepackage{array}
-\usepackage{indentfirst}
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2021_conference,times}
 \usepackage{booktabs}
-\usepackage[bottom]{footmisc}
-\usepackage{xcolor}
-% \usepackage{iclr2021_conference,times}
-\usepackage[colorlinks=true, linkcolor=black]{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
 \usepackage{listings}
+\usepackage[colorlinks=true, linkcolor=black, citecolor=black]{hyperref}
 \lstset{ 
   language=Python, 
   frame=single, 
@@ -30,37 +16,51 @@
   stringstyle=\color{red}, 
 }
 
-\setlength{\footnotesep}{0.5cm} % set footnote seperation to 0.5cm
-\setlength{\parindent}{1cm} \setstretch{1.15} \addbibresource{references.bib}% set paragraph indentation to 1cm
 
-\newcommand{\titlefont}{\fontsize{21}{32}\selectfont}
-\newcommand{\authorfont}{\fontsize{20.74}{24}\selectfont}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+
+\title{Topic 3: Modelling of Real-life MIP Problems}
+\iclrfinalcopy%
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{The Ikunbelievable Group\thanks{ The Ikunbelievable Group consists of four people who contributed equally to this work:
+\begin{tabular}{@{}l}
+  Xiaotian Ji (\texttt{Xiaotian.Ji20@student.xjtlu.edu.cn}), \\
+  Qiuyi Chen (\texttt{Qiuyi.Chen2002@student.xjtlu.edu.cn}), \\
+  Liyuan Jin (\texttt{Liyuan.Jin20@student.xjtlu.edu.cn}),   \\
+  Chi Qin (\texttt{Chi.Qin20@student.xjtlu.edu.cn}).%
+\end{tabular}%
+}
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
 \begin{document}
 
-\begin{titlepage}
-  \centering
-  \vspace*{5cm}
-  {\titlefont\textbf{\color{black}Topic 3: Modelling of Real-life MIP Problems}\par}
-  \vspace{1.5cm}
-  {\authorfont\color{black} The Ikunbelievable Group\par}
-  \vfill
-\end{titlepage}
+
+\maketitle
+\clearpage
+
 
 \tableofcontents
 \clearpage
-
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
-\footnotetext[1]{%
-  The Ikunbelievable Group consists of four people who contributed equally to this work:
-  \begin{tabular}{@{}l}
-    Xiaotian Ji (\texttt{Xiaotian.Ji20@student.xjtlu.edu.cn}), \\
-    Qiuyi Chen (\texttt{Qiuyi.Chen2002@student.xjtlu.edu.cn}), \\
-    Liyuan Jin (\texttt{Liyuan.Jin20@student.xjtlu.edu.cn}),   \\
-    Chi Qin (\texttt{Chi.Qin20@student.xjtlu.edu.cn}).%
-  \end{tabular}%
-}
-\renewcommand{\thefootnote}{\arabic{footnote}}
-
 \section{Introduction}
 
 Lily has recently been accepted by the London School of Economics
@@ -94,8 +94,7 @@ the Ikunbelievable Group.
   \item Time: We will consider the time required to travel between cities by plane and
         train.
   \item Price: Since ticket prices can vary from month to month, in early May, we
-        calculated the average price of tickets from July 1 to July 14 and from August
-        1 to August 14 in 2023.
+        calculated the average price of tickets from July 1 to July 14, from 8 AM to 8 PM.\@
   \item Customization: To account for individual preferences, we will input different
         weights for cost and time, allowing each traveler to prioritize factors that
         are most important to them when selecting the optimal travel itinerary.
@@ -118,7 +117,7 @@ caters to different individual preferences.
         London, as they need to store their luggage at the school in London and take
         only essential items for the journey.
   \item Considering factors like public health events and peak travel seasons, we
-        averaged ticket prices between July 1st and 14th, and August 1st and 14th, from
+        averaged ticket prices between July 1st and 14th, from
         8 AM to 8 PM, to determine ticket prices and minimize the impact of outliers.
 \end{enumerate}
 
@@ -128,7 +127,7 @@ Our goal is to identify the best transportation options for various groups with
 diverse needs, enabling efficient travel across all cities. Therefore, some
 constraints are as followed:
 
-\begin{enumerate}[leftmargin=2cm]
+\begin{enumerate}
   \item Each city can only be visited once.
   \item We set maximum limits for plane and train usage because some individuals may
         have constraints on taking planes or trains due to personal preferences,
@@ -172,24 +171,25 @@ The ticket prices and travel routes are displayed with black lines representing 
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=0.85\textwidth]{pic/toy_all.jpg}
+    \includegraphics[width=0.85\textwidth]{/Users/badudu/Documents/MTH203/CW2/report/pic/toy_all.jpg}
     \caption{Ticket Prices}%
     \label{fig:Ticketprice}
   \end{subfigure}
   \hfill % Add space between images
   \begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=0.85\textwidth]{pic/optimal.jpg}
+    \includegraphics[width=0.85\textwidth]{/Users/badudu/Documents/MTH203/CW2/report/pic/optimal.jpg}
     \caption{Optimal Choice}%
     \label{fig:Optimalchoice}
   \end{subfigure}%
   \hfill % Add space between images
   \begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=0.85\textwidth]{pic/higher_price.jpg}
+    \includegraphics[width=0.85\textwidth]{/Users/badudu/Documents/MTH203/CW2/report/pic/higher_price.jpg}
     \caption{Choice With Higher Price}%
     \label{fig:Higherprice}
   \end{subfigure}%
   \caption{Toy Example}
 \end{figure}
+\clearpage
 \section{MIP Model}
 Let $G_1(V_1, E_1)$ and $G_2(V_2, E_2)$ be two given graphs, each with their
 respective vertex and edge sets. Define a positive edge weight function $w :
@@ -268,7 +268,7 @@ Therefore, our objective function can be further written as:
 
 \section{Computational Results}
 %todo appendix
-To find how different constraints and weight functions influence the consequence, we use Python to process the data that we collected and show in the~\ref{para:appendix}ppenix. 
+To find how different constraints and weight functions influence the consequence, we write a Python solver with held-kalp (``See \citet{doi:10.1137/0110015} for more information'') and the raw data and code are shown in the~\ref{para:appendix}ppenix. 
 
 After evaluating unconstrained air and train travel options, we present three recommendations based on varying cost and time priorities. Our objective function f incorporates $\alpha$ and $\beta$ as weights. In~Table~\ref{tab:alpha1beta0} ($\alpha = 1, \beta = 0$) highlights the least expensive route, while~Table~\ref{tab:alpha0beta1} ($\alpha = 0, \beta = 1$) showcases the quickest option. Table~\ref{tab:alpha0.3beta0.7} ($\alpha = 0.3, \beta = 0.7$) offers a balanced choice, taking only 20 minutes longer than the fastest plan but saving 1,300 yuan, making it a potentially superior option after extensive iterations.
 
@@ -370,7 +370,7 @@ Since Lily has witnessed a plane crash, she hopes to limit the air travels withi
   \caption{$\alpha=0.3, \beta=0.7, N_1=4, N_2=10$}%
   \label{tab:alpha0.3beta0.7N14}
 \end{table}
-%hyperlink
+
 
 According to the calculation above, we recommend Lily to limit their times of flight into 6 times and consider $\alpha = 0.7, \beta = 0.3$ to meet the balance between cost and time, along with the fear for taking the plane.
 
@@ -380,11 +380,131 @@ We have presented an approach to find an optimal travel route for Lily and David
 We analyzed various scenarios, giving different weights to cost and time attributes, as well as considering the constraint of limiting the number of flights due to Lily's fear of flying. Computational results show that when the number of flights is limited to 6 and the weight of cost is 0.7, while the weight of time is 0.3, we achieve a balanced travel plan that accommodates Lily's concerns and still provides a satisfactory travel experience for the group.
 
 The research presented here can be extended in the future. As the complexity of the optimization algorithm itself is an NP-hard problem, the time required for the solver to find a solution may increase exponentially when the number of cities is too large. Therefore, optimizing the algorithm or finding local optimal solutions offers room for improvement. Moreover, measuring the concept of cost-effectiveness remains vague and is only derived from our observations after thousands of experiments. The difficulty in defining cost-effectiveness lies in its subjective nature, as it varies from person to person. However, our results are helpful to Lily and her friends, and we wish them a great time on their journey.
+
+\bibliography{iclr2021_conference}
+\bibliographystyle{iclr2021_conference}
+
 \clearpage
 \appendix
 \section{Appendix}%
 \label{para:appendix}
-The script is also available on https://github.com/Beautifuldog01/CW2/tree/main
+% This is the raw data for ticket price in Table~\ref{tab:airplane} and Table~\ref{tab:train}.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{lllllllllll}
+
+     & London & Vienna & Paris & Rome & Barcelona & Berlin & Amsterdam & København & Zurich & Budapest \\
+
+  London & 0 & 545 & 459 & 769 & 532 & 559 & 940 & 669 & 616 & 296 \\
+
+  Vienna & 545 & 0 & 868 & 344 & 742 & 880 & 1367 & 931 & 3456 & 794 \\
+
+  Paris & 459 & 868 & 0 & 292 & 590 & 635 & 921 & 718 & 608 & 1171 \\
+
+  Rome & 769 & 344 & 292 & 0 & 634 & 820 & 1819 & 1109 & 690 & 489 \\
+  Barcelona & 532 & 742 & 590 & 634 & 0 & 840 & 1104 & 1214 & 760 & 728 \\
+  Berlin & 559 & 880 & 635 & 820 & 840 & 0 & 967 & 317 & N/A & 537 \\
+  Amsterdam & 940 & 1367 & 921 & 1819 & 1104 & 967 & 0 & 559 & 1049 & 1269 \\
+  København & 669 & 931 & 718 & 1109 & 1214 & 317 & 559 & 0 & 855 & 613 \\
+  Zurich & 616 & 3456 & 608 & 690 & 760 & N/A & 1049 & 855 & 0 & 2650 \\
+  Budapest & 296 & 794 & 1171 & 489 & 728 & 537 & 1269 & 613 & 2650 & 0 \\
+  \end{tabular}
+  \caption{Travel cost (¥) of Airplane between cities in July}%
+  \label{tab:costairplane}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{lllllllllll}
+
+     & London & Vienna & Paris & Rome & Barcelona & Berlin & Amsterdam & København & Zurich & Budapest \\
+
+  London & 0 & 1351 & 1148 & N/A & 2541 & 1015 & 753 & 1680 & 1155 & 3150 \\
+
+  Vienna & 1351 & 0 & 1072 & 365 & 1778 & 625 & 552 & 565 & 630 & 175 \\
+
+  Paris & 1148 & 1072 & 0 & 770 & 1386 & 691 & 697 & 1078 & 1120 & 980 \\
+
+  Rome & N/A & 365 & 770 & 0 & N/A & 1036 & 974 & N/A & 840 & 1750 \\
+
+  Barcelona & 2541 & 1778 & 1386 & N/A & 0 & 2249 & 2073 & 2940 & 2450 & 4060 \\
+
+  Berlin & 1015 & 625 & 691 & 1036 & 2249 & 0 & 599 & 240 & 455 & 420 \\
+
+  Amsterdam & 753 & 552 & 697 & 974 & 2073 & 599 & 0 & 469 & 525 & 595 \\
+
+  København & 1680 & 565 & 1078 & N/A & 2940 & 240 & 469 & 0 & 2002 & 665 \\
+
+  Zurich & 1155 & 630 & 1120 & 840 & 2450 & 455 & 525 & 2002 & 0 & 1050 \\
+
+  Budapest & 3150 & 175 & 980 & 1750 & 4060 & 420 & 595 & 665 & 1050 & 0 \\
+  \end{tabular}
+  \caption{Travel cost (¥) of Train between cities in July}%
+  \label{tab:costtrain}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{lllllllllll}
+
+     & London & Vienna & Paris & Rome & Barcelona & Berlin & Amsterdam & København & Zurich & Budapest \\
+
+  London & 0 & 2.25 & 1.05 & 2.6 & 2.5 & 2 & 1.1 & 2 & 1.83 & 2.67 \\
+
+  Vienna & 2.25 & 0 & 2 & 1.45 & 2.5 & 1.1 & 1.8 & 1.5 & 1.3 & 0.83 \\
+
+  Paris & 1.05 & 2 & 0 & 2.25 & 2 & 1.8 & 1.3 & 2 & 1.3 & 0.83 \\
+
+  Rome & 2.6 & 1.45 & 2.25 & 0 & 2 & 2 & 2.25 & 2.5 & 1.58 & 1.67 \\
+
+  Barcelona & 2.5 & 2.5 & 2 & 2 & 0 & 2.55 & 2.3 & 3 & 1.92 & 2.67 \\
+
+  Berlin & 2 & 1.1 & 1.8 & 2 & 2.55 & 0 & 1.4 & 1.5 & N/A & 1.5 \\
+
+  Amsterdam & 1.1 & 1.8 & 1.3 & 2.25 & 2.3 & 1.4 & 0 & 1.67 & 1.75 & 2.08 \\
+
+  København & 2 & 1.5 & 2 & 2.5 & 3 & 1 & 1.5 & 0 & N/A & 2 \\
+
+  Zurich & 1.83 & 1.3 & 1.3 & 1.58 & 1.92 & N/A & 1.67 & N/A & 0 & 1.67 \\
+
+  Budapest & 2.67 & 0.83 & 0.83 & 1.67 & 2.67 & 1.5 & 2.08 & 2 & 1.67 & 0 \\
+  \end{tabular}
+  \caption{Travel time (in hours) of Airplane between cities in July}%
+  \label{tab:timeairplane}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{lllllllllll}
+
+     & London & Vienna & Paris & Rome & Barcelona & Berlin & Amsterdam & København & Zurich & Budapest \\
+
+  London & 0 & 14 & 2 & N/A & 11 & 11 & 3.9 & 27 & 8 & 24 \\
+
+  Vienna & 14 & 0 & 11 & 17.5 & 35 & 12 & 14 & 17.6 & 8 & 2.63 \\
+
+  Paris & 2 & 11 & 0 & 10.5 & 6.75 & 8.8 & 3.5 & 14.5 & 4.5 & 13.42 \\
+
+  Rome & N/A & 17.5 & 10.5 & 0 & N/A & 25 & 32 & N/A & 8 & 27 \\
+
+  Barcelona & 11 & 35 & 6.75 & N/A & 0 & 23.3 & 20 & 35 & 15 & 32 \\
+
+  Berlin & 11 & 12 & 8.8 & 25 & 23.3 & 0 & 6.3 & 5 & 9 & 14 \\
+
+  Amsterdam & 3.9 & 14 & 3.5 & 32 & 20 & 6.3 & 0 & 16 & 10 & 21 \\
+
+  København & 27 & 17.6 & 14.5 & N/A & 35 & 5 & 16 & 0 & 18.4 & 21 \\
+
+  Zurich & 8 & 8 & 4.5 & 8 & 15 & 9 & 10 & 18.4 & 0 & 11 \\
+
+  Budapest & 24 & 2.63 & 13.42 & 27 & 32 & 14 & 21 & 21 & 11 & 0 \\
+  \end{tabular}
+  \caption{Travel time (in hours) of Train between cities in July}%
+  \label{tab:timetrain}
+\end{table}
+\clearpage
+The solver script is also available on \url{https://github.com/Beautifuldog01/CW2/tree/main}
 \begin{lstlisting}
 import itertools
 import pandas as pd
@@ -610,9 +730,5 @@ print("Optimal path:", optimal_path)
 print("Transportation mode:", optimal_transport)
 print("Costs for each segment:", cost_list)
 print("Times for each segment:", time_list)
-print("cost all", sum(cost_list))
-print("time all", sum(time_list))
-
   \end{lstlisting}
-
 \end{document}
